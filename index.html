@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ornique Jewelry — premium modern jewelry from Bangladesh. Discover timeless pieces designed to elevate every look.">
+  <title>Ornique Jewelry | Premium Modern Jewelry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#191714; --muted:#77716a; --cream:#f7f3ec; --paper:#fffdf9;
+      --gold:#b28a4a; --line:#e7dfd3; --dark:#11100f;
+      --shadow:0 18px 55px rgba(35,28,20,.10);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);background:var(--paper);font-family:"DM Sans",sans-serif}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    .announcement{background:var(--dark);color:#fff;padding:9px 18px;text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+    header{position:sticky;top:0;z-index:20;background:rgba(255,253,249,.93);backdrop-filter:blur(14px);border-bottom:1px solid rgba(231,223,211,.8)}
+    .nav{max-width:1200px;margin:auto;height:76px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:11px;font-family:"Playfair Display",serif;font-weight:700;letter-spacing:.08em}
+    .brand img{width:46px;height:46px;object-fit:cover;border-radius:50%;border:1px solid #dfcfb3}
+    .brand span{font-size:20px}
+    .navlinks{display:flex;gap:28px;font-size:13px;font-weight:600}
+    .navlinks a:hover{color:var(--gold)}
+    .nav-actions{display:flex;gap:10px;align-items:center}
+    .iconbtn{width:40px;height:40px;border:1px solid var(--line);background:transparent;border-radius:50%;cursor:pointer}
+    .hero{max-width:1200px;margin:auto;padding:36px 24px 72px}
+    .hero-card{min-height:600px;border-radius:24px;overflow:hidden;position:relative;background:
+      linear-gradient(90deg,rgba(18,15,12,.82) 0%,rgba(18,15,12,.42) 45%,rgba(18,15,12,.08) 100%),
+      url("assets/ornique-logo.jpeg") center/cover}
+    .hero-content{padding:110px 8%;max-width:690px;color:#fff}
+    .eyebrow{font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:#d9c19a;font-weight:700}
+    h1,h2,h3{font-family:"Playfair Display",serif}
+    h1{font-size:clamp(48px,7vw,88px);line-height:.95;margin:18px 0}
+    .hero p{font-size:17px;line-height:1.75;color:#f4eee6;max-width:560px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 22px;border-radius:999px;border:1px solid transparent;font-weight:700;cursor:pointer;transition:.2s}
+    .btn-gold{background:#c5a36a;color:#15120e}.btn-gold:hover{transform:translateY(-2px)}
+    .btn-light{background:#fff;color:#15120e}.btn-light:hover{transform:translateY(-2px)}
+    .section{max-width:1200px;margin:auto;padding:76px 24px}
+    .section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:30px;gap:20px}
+    .section-head h2{font-size:42px;margin:8px 0}
+    .section-head p{color:var(--muted);max-width:520px;line-height:1.7}
+    .products{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .product{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:.25s;box-shadow:0 5px 20px rgba(30,20,10,.03)}
+    .product:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+    .product-img{aspect-ratio:1/1;overflow:hidden;background:linear-gradient(135deg,#f3eee5,#e5d6be)}
+    .product-img img{width:100%;height:100%;object-fit:cover;display:block;transition:.35s}
+    .product:hover .product-img img{transform:scale(1.04)}
+    .product-info{padding:18px 18px 20px}
+    .product-name{font-family:"Playfair Display",serif;font-size:21px;margin:0 0 6px}
+    .meta{color:var(--muted);font-size:13px}
+    .price{font-weight:700;margin-top:13px}
+    .category-row{display:flex;gap:10px;overflow:auto;padding-bottom:8px;margin-bottom:25px}
+    .pill{white-space:nowrap;border:1px solid var(--line);background:#fff;padding:10px 17px;border-radius:999px;font-size:13px;cursor:pointer}
+    .pill.active,.pill:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+    .story{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:center}
+    .story-visual{min-height:480px;border-radius:22px;background:url("assets/ornique-logo.jpeg") center/cover;box-shadow:var(--shadow)}
+    .story-copy h2{font-size:48px;line-height:1.08;margin:10px 0 20px}
+    .story-copy p{color:var(--muted);line-height:1.85}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+    .feature{padding:24px;border:1px solid var(--line);border-radius:16px;background:#fff}
+    .feature strong{display:block;margin-bottom:7px}
+    .feature span{font-size:13px;color:var(--muted);line-height:1.6}
+    .newsletter{background:var(--cream);border-radius:24px;padding:55px 7%;text-align:center}
+    .newsletter h2{font-size:42px;margin:8px 0}
+    .newsletter p{color:var(--muted);margin:0 auto 22px;max-width:570px}
+    .form{display:flex;max-width:520px;margin:auto;background:#fff;border:1px solid var(--line);padding:6px;border-radius:999px}
+    .form input{flex:1;border:0;outline:0;padding:0 15px;background:transparent;min-width:0}
+    footer{background:#151311;color:#eee;padding:55px 24px 28px}
+    .footer-grid{max-width:1200px;margin:auto;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:35px}
+    footer h3{font-size:18px;margin:0 0 14px}
+    footer p,footer a{color:#aaa;font-size:13px;line-height:1.8}
+    footer a:hover{color:#fff}
+    .copyright{max-width:1200px;margin:38px auto 0;padding-top:20px;border-top:1px solid #302c27;color:#777;font-size:12px;display:flex;justify-content:space-between;gap:20px}
+    .cart-panel{position:fixed;right:-420px;top:0;width:min(390px,100%);height:100vh;background:#fff;z-index:50;box-shadow:-20px 0 60px rgba(0,0,0,.18);padding:24px;transition:.3s;display:flex;flex-direction:column}
+    .cart-panel.open{right:0}
+    .cart-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:15px}
+    .cart-items{flex:1;overflow:auto;padding:18px 0}
+    .empty{color:var(--muted);text-align:center;padding:50px 10px}
+    .cart-item{display:flex;gap:12px;margin-bottom:18px}
+    .cart-item img{width:70px;height:70px;border-radius:10px;object-fit:cover}
+    .cart-item b{display:block;margin-bottom:5px}
+    .cart-item small{color:var(--muted)}
+    .cart-bottom{border-top:1px solid var(--line);padding-top:18px}
+    .total{display:flex;justify-content:space-between;font-weight:700;margin-bottom:15px}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:40;display:none}
+    .overlay.show{display:block}
+    @media(max-width:850px){
+      .navlinks{display:none}.products{grid-template-columns:repeat(2,1fr)}
+      .story{grid-template-columns:1fr}.story-visual{min-height:360px}
+      .footer-grid{grid-template-columns:1fr 1fr}.hero-card{min-height:520px}.hero-content{padding:85px 8%}
+    }
+    @media(max-width:560px){
+      .nav{height:68px}.brand span{font-size:17px}.brand img{width:40px;height:40px}
+      .products{grid-template-columns:1fr}.features{grid-template-columns:1fr}
+      .hero{padding:18px 14px 45px}.section{padding:55px 18px}.hero-content{padding:75px 7%}
+      .section-head{display:block}.section-head h2,.story-copy h2,.newsletter h2{font-size:36px}
+      .footer-grid{grid-template-columns:1fr}.copyright{display:block}
+      .copyright span{display:block;margin-top:8px}
+    }
+  </style>
+</head>
+<body>
+  <div class="announcement">Free delivery on selected orders • Bangladesh</div>
+  <header>
+    <nav class="nav">
+      <a class="brand" href="#">
+        <img src="assets/ornique-logo.jpeg" alt="Ornique Jewelry logo">
+        <span>ORNIQUE</span>
+      </a>
+      <div class="navlinks">
+        <a href="#shop">Shop</a><a href="#about">About</a><a href="#contact">Contact</a>
+        <a href="https://www.instagram.com/ornique.bd/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <div class="nav-actions">
+        <button class="iconbtn" onclick="toggleCart()" aria-label="Open shopping bag">🛍</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-content">
+          <div class="eyebrow">Ornique Jewelry • Bangladesh</div>
+          <h1>Jewelry that feels like you.</h1>
+          <p>Modern silhouettes, refined details and timeless shine — curated for the moments you want to remember.</p>
+          <a class="btn btn-gold" href="#shop">Explore Collection →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="shop">
+      <div class="section-head">
+        <div><div class="eyebrow">The collection</div><h2>Made to be noticed.</h2></div>
+        <p>Discover premium-inspired pieces for everyday elegance, celebrations and everything in between.</p>
+      </div>
+      <div class="category-row">
+        <button class="pill active" onclick="filterProducts('all',this)">All</button>
+        <button class="pill" onclick="filterProducts('necklace',this)">Necklaces</button>
+        <button class="pill" onclick="filterProducts('earrings',this)">Earrings</button>
+        <button class="pill" onclick="filterProducts('rings',this)">Rings</button>
+        <button class="pill" onclick="filterProducts('bracelet',this)">Bracelets</button>
+      </div>
+      <div class="products" id="products"></div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="story">
+        <div class="story-visual"></div>
+        <div class="story-copy">
+          <div class="eyebrow">Our philosophy</div>
+          <h2>Quiet luxury.<br>Modern expression.</h2>
+          <p>Ornique Jewelry is a modern jewelry destination from Bangladesh, created for women who love refined design without trying too hard.</p>
+          <p>From delicate everyday pieces to statement moments, every collection is chosen to make your personal style feel a little more extraordinary.</p>
+          <div class="features">
+            <div class="feature"><strong>Premium look</strong><span>Elegant designs with a polished, timeless feel.</span></div>
+            <div class="feature"><strong>Easy ordering</strong><span>Order directly through your preferred social channel.</span></div>
+            <div class="feature"><strong>Made for you</strong><span>Curated styles for everyday and special occasions.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="newsletter">
+        <div class="eyebrow">Stay in the loop</div>
+        <h2>New drops. Private previews.</h2>
+        <p>Follow Ornique on Instagram for new arrivals, styling ideas and limited collections.</p>
+        <a class="btn btn-gold" href="https://www.instagram.com/ornique.bd/" target="_blank" rel="noopener">Follow @ornique.bd</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="footer-grid">
+      <div>
+        <h3>ORNIQUE</h3>
+        <p>Premium modern jewelry from Bangladesh. Designed to complement your everyday shine.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <p><a href="#shop">Shop collection</a><br><a href="#about">Our story</a><br><a href="#contact">Contact</a></p>
+      </div>
+      <div>
+        <h3>Social</h3>
+        <p><a href="https://www.instagram.com/ornique.bd/" target="_blank" rel="noopener">Instagram</a><br>
+        <a href="https://www.facebook.com/share/199brhTqP7/?mibextid=wwXIfr" target="_blank" rel="noopener">Facebook</a></p>
+      </div>
+      <div>
+        <h3>Orders</h3>
+        <p>For product availability, sizing and orders, message us on Instagram or Facebook.</p>
+      </div>
+    </div>
+    <div class="copyright">
+      <span>© 2026 Ornique Jewelry. All rights reserved.</span>
+      <span>Bangladesh • Premium / Modern</span>
+    </div>
+  </footer>
+
+  <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+  <aside class="cart-panel" id="cart">
+    <div class="cart-top"><h3 style="margin:0">Your Bag</h3><button class="iconbtn" onclick="toggleCart()">×</button></div>
+    <div class="cart-items" id="cartItems"><div class="empty">Your bag is empty.<br>Add a piece you love.</div></div>
+    <div class="cart-bottom">
+      <div class="total"><span>Total</span><span id="total">৳0</span></div>
+      <a id="orderBtn" class="btn btn-gold" style="width:100%" href="https://www.instagram.com/ornique.bd/" target="_blank" rel="noopener">Order via Instagram</a>
+    </div>
+  </aside>
+
+<script>
+const products = [
+  {id:1,name:"Aurora Drop Earrings",cat:"earrings",price:1450,img:"https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=85"},
+  {id:2,name:"Luna Pendant",cat:"necklace",price:1850,img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=900&q=85"},
+  {id:3,name:"Élan Signature Ring",cat:"rings",price:1250,img:"https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=85"},
+  {id:4,name:"Serene Pearl Necklace",cat:"necklace",price:2250,img:"https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=900&q=85"},
+  {id:5,name:"Celeste Bracelet",cat:"bracelet",price:1650,img:"https://images.unsplash.com/photo-1619119069152-a2b331eb392a?auto=format&fit=crop&w=900&q=85"},
+  {id:6,name:"Noir Halo Ring",cat:"rings",price:1350,img:"https://images.unsplash.com/photo-1603561596112-db8d9c0b8b2b?auto=format&fit=crop&w=900&q=85"}
+];
+let cart=[];
+
+function money(n){return "৳"+n.toLocaleString("en-BD")}
+function renderProducts(list=products){
+  document.getElementById("products").innerHTML=list.map(p=>`
+    <article class="product">
+      <div class="product-img"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
+      <div class="product-info">
+        <h3 class="product-name">${p.name}</h3>
+        <div class="meta">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)} • Ornique Collection</div>
+        <div class="price">${money(p.price)}</div>
+        <button class="btn btn-gold" style="width:100%;margin-top:14px" onclick="addToCart(${p.id})">Add to bag</button>
+      </div>
+    </article>`).join("");
+}
+function filterProducts(cat,el){
+  document.querySelectorAll(".pill").forEach(x=>x.classList.remove("active")); el.classList.add("active");
+  renderProducts(cat==="all"?products:products.filter(p=>p.cat===cat));
+}
+function addToCart(id){
+  const p=products.find(x=>x.id===id);
+  cart.push(p); renderCart(); openCart();
+}
+function renderCart(){
+  const box=document.getElementById("cartItems");
+  if(!cart.length){box.innerHTML='<div class="empty">Your bag is empty.<br>Add a piece you love.</div>'}
+  else box.innerHTML=cart.map((p,i)=>`
+    <div class="cart-item">
+      <img src="${p.img}" alt="">
+      <div style="flex:1"><b>${p.name}</b><small>${money(p.price)}</small></div>
+      <button class="iconbtn" onclick="removeItem(${i})">×</button>
+    </div>`).join("");
+  document.getElementById("total").textContent=money(cart.reduce((s,p)=>s+p.price,0));
+}
+function removeItem(i){cart.splice(i,1);renderCart()}
+function openCart(){document.getElementById("cart").classList.add("open");document.getElementById("overlay").classList.add("show")}
+function toggleCart(){
+  document.getElementById("cart").classList.toggle("open");
+  document.getElementById("overlay").classList.toggle("show");
+}
+renderProducts();
+</script>
+</body>
+</html>
