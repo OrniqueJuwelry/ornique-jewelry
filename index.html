@@ -545,101 +545,79 @@ function updateCheckoutTotal(){
 }
 
 async function placeOrder(){
-
-  const name=document.getElementById("customerName").value.trim();
-  const phone=document.getElementById("customerPhone").value.trim();
-  const address=document.getElementById("customerAddress").value.trim();
-  const area=document.getElementById("deliveryArea").value;
-  const paymentMethod=document.getElementById("paymentMethod").value;
-  const transactionId=document.getElementById("transactionId").value.trim();
-  const message=document.getElementById("checkoutMessage");
-
+  const name = document.getElementById("customerName").value.trim();
+  const phone = document.getElementById("customerPhone").value.trim();
+  const address = document.getElementById("customerAddress").value.trim();
+  const area = document.getElementById("deliveryArea").value;
+  const paymentMethod = document.getElementById("paymentMethod").value;
+  const transactionId = document.getElementById("transactionId").value.trim();
+  const message = document.getElementById("checkoutMessage");
   if(!name){
     alert("Please enter your full name.");
     return;
   }
-
   if(!phone){
     alert("Please enter your mobile number.");
     return;
   }
-
   if(!address){
     alert("Please enter your delivery address.");
     return;
   }
-
   if(!area){
     alert("Please select your delivery area.");
     return;
   }
-
   if(!paymentMethod){
     alert("Please select your payment method.");
     return;
   }
-
   if(!transactionId){
     alert("Please enter your Transaction ID.");
     return;
   }
-
-  const productTotal=getProductTotal();
-  const deliveryCharge=getDeliveryCharge();
-  const grandTotal=productTotal+deliveryCharge;
-
-  const orderItems=cart.map(p=>p.name).join(", ");
-
-  const orderData={
-    customerName:name,
-    phone:phone,
-    address:address,
-    area:area==="inside" ? "Inside Dhaka" : "Outside Dhaka",
-    products:orderItems,
-    productTotal:productTotal,
-    deliveryCharge:deliveryCharge,
-    grandTotal:grandTotal,
-    paymentMethod:paymentMethod,
-    transactionId:transactionId,
-    status:"Pending"
+  if(!cart.length){
+    alert("Your bag is empty.");
+    return;
+  }
+  const productTotal = getProductTotal();
+  const deliveryCharge = getDeliveryCharge();
+  const grandTotal = productTotal + deliveryCharge;
+  const orderItems = cart.map(p => p.name).join(", ");
+  const orderData = {
+    customerName: name,
+    phone: phone,
+    address: address,
+    area: area === "inside" ? "Inside Dhaka" : "Outside Dhaka",
+    products: orderItems,
+    productTotal: productTotal,
+    deliveryCharge: deliveryCharge,
+    grandTotal: grandTotal,
+    paymentMethod: paymentMethod,
+    transactionId: transactionId,
+    status: "Pending"
   };
-
-  message.innerHTML="⏳ Placing your order...";
-
-  try{
-
-    await fetch(WEB_APP_URL,{
-      method:"POST",
-      mode:"no-cors",
-      headers:{
-        "Content-Type":"text/plain;charset=utf-8"
-      },
-      body:JSON.stringify(orderData)
+  message.innerHTML = "⏳ Placing your order...";
+  try {
+    const response = await fetch(WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify(orderData)
     });
-
-    message.innerHTML=
+    message.innerHTML =
       "✅ Order placed successfully! Your order is now pending confirmation.";
-
-    cart=[];
-
+    cart = [];
     renderCart();
-
-    document.getElementById("customerName").value="";
-    document.getElementById("customerPhone").value="";
-    document.getElementById("customerAddress").value="";
-    document.getElementById("deliveryArea").value="";
-    document.getElementById("paymentMethod").value="";
-    document.getElementById("transactionId").value="";
-
+    document.getElementById("customerName").value = "";
+    document.getElementById("customerPhone").value = "";
+    document.getElementById("customerAddress").value = "";
+    document.getElementById("deliveryArea").value = "";
+    document.getElementById("paymentMethod").value = "";
+    document.getElementById("transactionId").value = "";
     updateCheckoutTotal();
-
-  }catch(error){
-
+  } catch(error) {
     console.error(error);
-
-    message.innerHTML=
+    message.innerHTML =
       "❌ Something went wrong. Please try again.";
-
   }
 }
 
