@@ -102,7 +102,118 @@
       .section-head{display:block}.section-head h2,.story-copy h2,.newsletter h2{font-size:36px}
       .footer-grid{grid-template-columns:1fr}.copyright{display:block}
       .copyright span{display:block;margin-top:8px}
-    }
+    } .checkout-panel{
+  position:fixed;
+  right:-500px;
+  top:0;
+  width:min(480px,100%);
+  height:100vh;
+  background:#fffdf9;
+  z-index:60;
+  box-shadow:-20px 0 60px rgba(0,0,0,.18);
+  transition:.3s;
+  display:flex;
+  flex-direction:column;
+}
+
+.checkout-panel.open{
+  right:0;
+}
+
+.checkout-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 24px;
+  border-bottom:1px solid var(--line);
+  background:#fffdf9;
+}
+
+.checkout-body{
+  flex:1;
+  overflow:auto;
+  padding:24px;
+}
+
+.checkout-body h4{
+  font-family:"Playfair Display",serif;
+  font-size:20px;
+  margin:8px 0 15px;
+}
+
+.checkout-input{
+  width:100%;
+  padding:13px 14px;
+  margin-bottom:12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  color:var(--ink);
+  font:inherit;
+  outline:none;
+}
+
+.checkout-input:focus{
+  border-color:var(--gold);
+}
+
+.checkout-row{
+  display:flex;
+  justify-content:space-between;
+  padding:9px 0;
+  font-size:14px;
+}
+
+.checkout-grand{
+  border-top:1px solid var(--line);
+  margin-top:5px;
+  padding-top:15px;
+  font-size:17px;
+}
+
+.advance-note{
+  margin:18px 0;
+  padding:15px;
+  border:1px solid #dfcfb3;
+  border-radius:14px;
+  background:#faf5eb;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.advance-note strong{
+  display:block;
+  margin-bottom:5px;
+}
+
+.advance-note p{
+  margin:0;
+}
+
+.payment-box{
+  padding:16px;
+  margin-bottom:12px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+}
+
+.payment-box small{
+  display:block;
+  color:var(--muted);
+  margin-top:8px;
+  line-height:1.5;
+}
+
+@media(max-width:560px){
+  .checkout-panel{
+    width:100%;
+  }
+
+  .checkout-body{
+    padding:20px;
+  }
+}
   </style>
 </head>
 <body>
@@ -210,11 +321,81 @@
     <div class="cart-items" id="cartItems"><div class="empty">Your bag is empty.<br>Add a piece you love.</div></div>
     <div class="cart-bottom">
       <div class="total"><span>Total</span><span id="total">৳0</span></div>
-      <a id="orderBtn" class="btn btn-gold" style="width:100%" href="https://www.instagram.com/ornique.bd/" target="_blank" rel="noopener">Order via Instagram</a>
+      <button id="orderBtn" class="btn btn-gold" style="width:100%" onclick="openCheckout()">Checkout</button>
     </div>
   </aside>
+<div class="checkout-panel" id="checkoutPanel">
+  <div class="checkout-top">
+    <h3 style="margin:0">Checkout</h3>
+    <button class="iconbtn" onclick="closeCheckout()">×</button>
+  </div>
 
-<script>
+  <div class="checkout-body">
+
+    <h4>Customer Information</h4>
+
+    <input id="customerName" class="checkout-input" type="text" placeholder="Full Name" required>
+
+    <input id="customerPhone" class="checkout-input" type="tel" placeholder="Mobile Number" required>
+
+    <textarea id="customerAddress" class="checkout-input" placeholder="Delivery Address" rows="3" required></textarea>
+
+    <select id="deliveryArea" class="checkout-input" onchange="updateCheckoutTotal()">
+      <option value="">Select Delivery Area</option>
+      <option value="inside">Inside Dhaka — ৳80</option>
+      <option value="outside">Outside Dhaka — ৳130</option>
+    </select>
+
+    <h4>Order Summary</h4>
+
+    <div class="checkout-row">
+      <span>Product Total</span>
+      <strong id="checkoutProductTotal">৳0</strong>
+    </div>
+
+    <div class="checkout-row">
+      <span>Delivery Charge</span>
+      <strong id="checkoutDelivery">৳0</strong>
+    </div>
+
+    <div class="checkout-row checkout-grand">
+      <span>Grand Total</span>
+      <strong id="checkoutGrandTotal">৳0</strong>
+    </div>
+
+    <div class="advance-note">
+      <strong>📌 Important</strong>
+      <p>
+        Full payment is not required in advance.
+        Only the delivery charge must be paid in advance.
+        The remaining product amount will be paid upon delivery.
+      </p>
+    </div>
+
+    <h4>Payment</h4>
+
+    <div class="payment-box">
+      <strong>bKash Personal</strong>
+      <div style="font-size:20px;margin-top:6px">01517826384</div>
+      <small>Send only the delivery charge to this number.</small>
+    </div>
+
+    <select id="paymentMethod" class="checkout-input">
+      <option value="">Select Payment Method</option>
+      <option value="bKash">bKash</option>
+      <option value="Nagad">Nagad</option>
+    </select>
+
+    <input id="transactionId" class="checkout-input" type="text" placeholder="Transaction ID" required>
+
+    <button class="btn btn-gold" style="width:100%;margin-top:15px" onclick="placeOrder()">
+      Place Order
+    </button>
+
+    <div id="checkoutMessage" style="margin-top:15px;text-align:center"></div>
+
+  </div>
+</div><script>
 const products = [
   {id:1,name:"Kashmiri 1 Dozen With Jhumka",cat:"bangles",price:199,img:"https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=900&q=85"},
   {id:2,name:"AD Diamond Cut Slim",cat:"bangles",price:199,img:"https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=900&q=85"},
@@ -232,47 +413,238 @@ const products = [
 
   {id:11,name:"Snakeshape Viral Payel",cat:"payel",price:199,img:"https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=900&q=85"}
 ];
+
 let cart=[];
 
-function money(n){return "৳"+n.toLocaleString("en-BD")}
+const WEB_APP_URL="https://script.google.com/macros/s/AKfycbzvwEDMAfWkSdj1jU-WP7yjrLc7xQSNENh3lmYhI41OHgwu3sb4lWvUHDH7bdIvxfSLAw/exec";
+
+function money(n){
+  return "৳"+n.toLocaleString("en-BD");
+}
+
 function renderProducts(list=products){
   document.getElementById("products").innerHTML=list.map(p=>`
     <article class="product">
-      <div class="product-img"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
+      <div class="product-img">
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+      </div>
       <div class="product-info">
         <h3 class="product-name">${p.name}</h3>
         <div class="meta">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)} • Ornique Collection</div>
         <div class="price">${money(p.price)}</div>
-        <button class="btn btn-gold" style="width:100%;margin-top:14px" onclick="addToCart(${p.id})">Add to bag</button>
+        <button class="btn btn-gold" style="width:100%;margin-top:14px" onclick="addToCart(${p.id})">
+          Add to bag
+        </button>
       </div>
-    </article>`).join("");
+    </article>
+  `).join("");
 }
+
 function filterProducts(cat,el){
-  document.querySelectorAll(".pill").forEach(x=>x.classList.remove("active")); el.classList.add("active");
+  document.querySelectorAll(".pill").forEach(x=>x.classList.remove("active"));
+  el.classList.add("active");
   renderProducts(cat==="all"?products:products.filter(p=>p.cat===cat));
 }
+
 function addToCart(id){
   const p=products.find(x=>x.id===id);
-  cart.push(p); renderCart(); openCart();
+  cart.push(p);
+  renderCart();
+  openCart();
 }
+
 function renderCart(){
   const box=document.getElementById("cartItems");
-  if(!cart.length){box.innerHTML='<div class="empty">Your bag is empty.<br>Add a piece you love.</div>'}
-  else box.innerHTML=cart.map((p,i)=>`
-    <div class="cart-item">
-      <img src="${p.img}" alt="">
-      <div style="flex:1"><b>${p.name}</b><small>${money(p.price)}</small></div>
-      <button class="iconbtn" onclick="removeItem(${i})">×</button>
-    </div>`).join("");
-  document.getElementById("total").textContent=money(cart.reduce((s,p)=>s+p.price,0));
+
+  if(!cart.length){
+    box.innerHTML='<div class="empty">Your bag is empty.<br>Add a piece you love.</div>';
+  }else{
+    box.innerHTML=cart.map((p,i)=>`
+      <div class="cart-item">
+        <img src="${p.img}" alt="">
+        <div style="flex:1">
+          <b>${p.name}</b>
+          <small>${money(p.price)}</small>
+        </div>
+        <button class="iconbtn" onclick="removeItem(${i})">×</button>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("total").textContent=
+    money(cart.reduce((s,p)=>s+p.price,0));
 }
-function removeItem(i){cart.splice(i,1);renderCart()}
-function openCart(){document.getElementById("cart").classList.add("open");document.getElementById("overlay").classList.add("show")}
+
+function removeItem(i){
+  cart.splice(i,1);
+  renderCart();
+}
+
+function openCart(){
+  document.getElementById("cart").classList.add("open");
+  document.getElementById("overlay").classList.add("show");
+}
+
 function toggleCart(){
   document.getElementById("cart").classList.toggle("open");
   document.getElementById("overlay").classList.toggle("show");
 }
+
+function openCheckout(){
+
+  if(!cart.length){
+    alert("Your bag is empty. Please add a product first.");
+    return;
+  }
+
+  document.getElementById("cart").classList.remove("open");
+  document.getElementById("overlay").classList.remove("show");
+
+  document.getElementById("checkoutPanel").classList.add("open");
+
+  updateCheckoutTotal();
+}
+
+function closeCheckout(){
+  document.getElementById("checkoutPanel").classList.remove("open");
+}
+
+function getProductTotal(){
+  return cart.reduce((sum,p)=>sum+p.price,0);
+}
+
+function getDeliveryCharge(){
+
+  const area=document.getElementById("deliveryArea").value;
+
+  if(area==="inside"){
+    return 80;
+  }
+
+  if(area==="outside"){
+    return 130;
+  }
+
+  return 0;
+}
+
+function updateCheckoutTotal(){
+
+  const productTotal=getProductTotal();
+  const delivery=getDeliveryCharge();
+  const grandTotal=productTotal+delivery;
+
+  document.getElementById("checkoutProductTotal").textContent=
+    money(productTotal);
+
+  document.getElementById("checkoutDelivery").textContent=
+    money(delivery);
+
+  document.getElementById("checkoutGrandTotal").textContent=
+    money(grandTotal);
+}
+
+async function placeOrder(){
+
+  const name=document.getElementById("customerName").value.trim();
+  const phone=document.getElementById("customerPhone").value.trim();
+  const address=document.getElementById("customerAddress").value.trim();
+  const area=document.getElementById("deliveryArea").value;
+  const paymentMethod=document.getElementById("paymentMethod").value;
+  const transactionId=document.getElementById("transactionId").value.trim();
+  const message=document.getElementById("checkoutMessage");
+
+  if(!name){
+    alert("Please enter your full name.");
+    return;
+  }
+
+  if(!phone){
+    alert("Please enter your mobile number.");
+    return;
+  }
+
+  if(!address){
+    alert("Please enter your delivery address.");
+    return;
+  }
+
+  if(!area){
+    alert("Please select your delivery area.");
+    return;
+  }
+
+  if(!paymentMethod){
+    alert("Please select your payment method.");
+    return;
+  }
+
+  if(!transactionId){
+    alert("Please enter your Transaction ID.");
+    return;
+  }
+
+  const productTotal=getProductTotal();
+  const deliveryCharge=getDeliveryCharge();
+  const grandTotal=productTotal+deliveryCharge;
+
+  const orderItems=cart.map(p=>p.name).join(", ");
+
+  const orderData={
+    customerName:name,
+    phone:phone,
+    address:address,
+    deliveryArea:area,
+    products:orderItems,
+    productTotal:productTotal,
+    deliveryCharge:deliveryCharge,
+    grandTotal:grandTotal,
+    paymentMethod:paymentMethod,
+    transactionId:transactionId,
+    status:"Pending"
+  };
+
+  message.innerHTML="⏳ Placing your order...";
+
+  try{
+
+    await fetch(WEB_APP_URL,{
+      method:"POST",
+      mode:"no-cors",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(orderData)
+    });
+
+    message.innerHTML=
+      "✅ Order placed successfully! Your order is now pending confirmation.";
+
+    cart=[];
+
+    renderCart();
+
+    document.getElementById("customerName").value="";
+    document.getElementById("customerPhone").value="";
+    document.getElementById("customerAddress").value="";
+    document.getElementById("deliveryArea").value="";
+    document.getElementById("paymentMethod").value="";
+    document.getElementById("transactionId").value="";
+
+    updateCheckoutTotal();
+
+  }catch(error){
+
+    console.error(error);
+
+    message.innerHTML=
+      "❌ Something went wrong. Please try again.";
+
+  }
+}
+
 renderProducts();
+</script>
 </script>
 </body>
 </html>
