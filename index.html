@@ -1082,11 +1082,66 @@ async function placeOrder(){
   message.innerHTML = "⏳ Placing your order...";
   try {
     const response = await fetch(WEB_APP_URL, {
-      method: "POST",
-      body: JSON.stringify(orderData)
-    });
-    message.innerHTML =
-      "✅ Order placed successfully! Your order is now pending confirmation.";
+  method: "POST",
+  body: JSON.stringify(orderData)
+});
+
+const result = await response.json();
+
+if(!result.success){
+  throw new Error(result.error || "Order could not be placed.");
+}
+
+message.innerHTML = `
+  <div style="
+    padding:18px;
+    border:1px solid #dfcfb3;
+    border-radius:14px;
+    background:#faf5eb;
+    text-align:center;
+  ">
+    <div style="
+      font-size:18px;
+      font-weight:700;
+      margin-bottom:8px;
+    ">
+      ✅ Order Placed Successfully!
+    </div>
+
+    <div style="
+      color:#77716a;
+      margin-bottom:8px;
+    ">
+      Your Order ID is:
+    </div>
+
+    <div style="
+      font-size:22px;
+      font-weight:700;
+      letter-spacing:.08em;
+      margin-bottom:12px;
+    ">
+      ${result.orderId}
+    </div>
+
+    <button
+      class="btn btn-gold"
+      style="margin-bottom:10px"
+      onclick="navigator.clipboard.writeText('${result.orderId}')"
+    >
+      📋 Copy Order ID
+    </button>
+
+    <div style="
+      font-size:13px;
+      color:#77716a;
+      line-height:1.5;
+    ">
+      Please save your Order ID.<br>
+      You will need it to track your order.
+    </div>
+  </div>
+`;
     cart = [];
     renderCart();
     document.getElementById("customerName").value = "";
