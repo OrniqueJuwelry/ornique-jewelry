@@ -395,25 +395,109 @@
     <div id="checkoutMessage" style="margin-top:15px;text-align:center"></div>
 
   </div>
-</div><script>
-const products = [
-  {id:1,name:"Kashmiri 1 Dozen With Jhumka",cat:"bangles",price:199,img:"assets/IMG_3233.jpeg"},
-  {id:2,name:"AD Diamond Cut Slim",cat:"bangles",price:199,img:"assets/diamondcut-small.jpg"},
-  {id:3,name:"AD Diamond Cut Bangles",cat:"bangles",price:299,img:"assets/Dimondcut-big.jpg"},
+</div><script>const products = [
+  {
+    id:1,
+    name:"Kashmiri 1 Dozen With Jhumka",
+    cat:"bangles",
+    colors:[
+      {name:"Black",price:199},
+      {name:"Deep Blue",price:199},
+      {name:"Blue",price:199},
+      {name:"Maroon",price:220},
+      {name:"Red",price:199},
+      {name:"Green",price:199}
+    ],
+    img:"assets/IMG_3233.jpeg"
+  },
 
-  {id:4,name:"AD Diamondcut Ring Loveshape",cat:"rings",price:149,img:"assets/heart.PNG"},
-  {id:5,name:"AD Diamondcut Ring Regular",cat:"rings",price:149,img:"assets/diamond.PNG"},
-  {id:6,name:"AD Diamondcut Premium",cat:"rings",price:299,img:"assets/premium.PNG"},
+  {
+    id:2,
+    name:"AD Diamond Cut Slim",
+    cat:"bangles",
+    price:199,
+    img:"assets/diamondcut-small.jpg"
+  },
 
-  {id:7,name:"Moonlight",cat:"pendants",price:149,img:"assets/moonshape.jpg"},
-  {id:8,name:"Double Loveshape",cat:"pendants",price:199,img:"assets/doublelove.jpg"},
-  {id:9,name:"Love",cat:"pendants",price:149,img:"assets/IMG_4498.jpg"},
+  {
+    id:3,
+    name:"AD Diamond Cut Bangles",
+    cat:"bangles",
+    price:299,
+    img:"assets/Dimondcut-big.jpg"
+  },
 
-  {id:10,name:"Leafover Shine",cat:"chain",price:149,img:"assets/leafover Chain.heic"},
+  {
+    id:4,
+    name:"AD Diamondcut Ring Loveshape",
+    cat:"rings",
+    price:149,
+    img:"assets/heart.PNG"
+  },
 
-  {id:11,name:"Snakeshape Viral Payel",cat:"payel",price:149,img:"assets/snake.jpg"},
+  {
+    id:5,
+    name:"AD Diamondcut Ring Regular",
+    cat:"rings",
+    price:149,
+    img:"assets/diamond.PNG"
+  },
 
-  {id:12,name:"Tedy Pendant",cat:"pendants",price:199,img:"assets/IMG_4492.jpg"}
+  {
+    id:6,
+    name:"AD Diamondcut Premium",
+    cat:"rings",
+    price:299,
+    img:"assets/premium.PNG"
+  },
+
+  {
+    id:7,
+    name:"Moonlight",
+    cat:"pendants",
+    price:149,
+    img:"assets/moonshape.jpg"
+  },
+
+  {
+    id:8,
+    name:"Double Loveshape",
+    cat:"pendants",
+    price:199,
+    img:"assets/doublelove.jpg"
+  },
+
+  {
+    id:9,
+    name:"Love",
+    cat:"pendants",
+    price:149,
+    img:"assets/IMG_4498.jpg"
+  },
+
+  {
+    id:10,
+    name:"Leafover Shine",
+    cat:"chain",
+    price:149,
+    img:"assets/leafover Chain.heic"
+  },
+
+  {
+    id:11,
+    name:"Snakeshape Viral Payel",
+    cat:"payel",
+    price:149,
+    img:"assets/snake.jpg"
+  },
+
+  {
+    id:12,
+    name:"Tedy Pendant",
+    cat:"pendants",
+    price:199,
+    img:"assets/IMG_4492.jpg"
+  }
 ];
 
 let cart=[];
@@ -425,21 +509,75 @@ function money(n){
 }
 
 function renderProducts(list=products){
-  document.getElementById("products").innerHTML=list.map(p=>`
-    <article class="product">
-      <div class="product-img">
-        <img src="${p.img}" alt="${p.name}" loading="lazy">
-      </div>
-      <div class="product-info">
-        <h3 class="product-name">${p.name}</h3>
-        <div class="meta">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)} • Ornique Collection</div>
-        <div class="price">${money(p.price)}</div>
-        <button class="btn btn-gold" style="width:100%;margin-top:14px" onclick="addToCart(${p.id})">
-          Add to bag
-        </button>
-      </div>
-    </article>
-  `).join("");
+
+  document.getElementById("products").innerHTML=list.map(p=>{
+
+    const hasColors = p.colors && p.colors.length > 0;
+
+    return `
+      <article class="product">
+
+        <div class="product-img">
+          <img 
+            id="product-img-${p.id}"
+            src="${p.img}"
+            alt="${p.name}"
+            loading="lazy"
+          >
+        </div>
+
+        <div class="product-info">
+
+          <h3 class="product-name">${p.name}</h3>
+
+          <div class="meta">
+            ${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)}
+            • Ornique Collection
+          </div>
+
+          ${
+            hasColors
+            ? `
+              <select
+                id="color-${p.id}"
+                class="checkout-input"
+                style="margin-top:14px;margin-bottom:10px"
+                onchange="updateProductColor(${p.id})"
+              >
+                ${p.colors.map((c,index)=>`
+                  <option value="${index}">
+                    ${c.name} — ${money(c.price)}
+                  </option>
+                `).join("")}
+              </select>
+
+              <div
+                id="product-price-${p.id}"
+                class="price"
+              >
+                ${money(p.colors[0].price)}
+              </div>
+            `
+            : `
+              <div class="price">
+                ${money(p.price)}
+              </div>
+            `
+          }
+
+          <button
+            class="btn btn-gold"
+            style="width:100%;margin-top:14px"
+            onclick="addToCart(${p.id})"
+          >
+            Add to bag
+          </button>
+
+        </div>
+
+      </article>
+    `;
+  }).join("");
 }
 
 function filterProducts(cat,el){
@@ -447,31 +585,160 @@ function filterProducts(cat,el){
   el.classList.add("active");
   renderProducts(cat==="all"?products:products.filter(p=>p.cat===cat));
 }
+function updateProductColor(id){
 
+  const product = products.find(p=>p.id===id);
+
+  if(!product || !product.colors){
+    return;
+  }
+
+  const select = document.getElementById(`color-${id}`);
+
+  const selectedIndex = Number(select.value);
+
+  const selectedColor = product.colors[selectedIndex];
+
+  document.getElementById(`product-price-${id}`).textContent =
+    money(selectedColor.price);
+}
 function addToCart(id){
-  const p=products.find(x=>x.id===id);
-  cart.push(p);
+
+  const p = products.find(x => x.id === id);
+
+  if(!p){
+    return;
+  }
+
+  let selectedColor = null;
+  let selectedPrice = p.price;
+
+  if(p.colors){
+
+    const select = document.getElementById(`color-${id}`);
+
+    const selectedIndex = Number(select.value);
+
+    selectedColor = p.colors[selectedIndex];
+
+    selectedPrice = selectedColor.price;
+  }
+
+  const existing = cart.find(item =>
+    item.productId === id &&
+    item.color === (selectedColor ? selectedColor.name : null)
+  );
+
+  if(existing){
+
+    existing.quantity += 1;
+
+  }else{
+
+    cart.push({
+      productId: id,
+      name: p.name,
+      color: selectedColor ? selectedColor.name : null,
+      price: selectedPrice,
+      img: p.img,
+      quantity: 1
+    });
+
+  }
+
   renderCart();
   openCart();
 }
 
 function renderCart(){
-  const box=document.getElementById("cartItems");
+
+  const box = document.getElementById("cartItems");
 
   if(!cart.length){
-    box.innerHTML='<div class="empty">Your bag is empty.<br>Add a piece you love.</div>';
+
+    box.innerHTML =
+      '<div class="empty">Your bag is empty.<br>Add a piece you love.</div>';
+
   }else{
-    box.innerHTML=cart.map((p,i)=>`
+
+    box.innerHTML = cart.map((p,i)=>`
+
       <div class="cart-item">
-        <img src="${p.img}" alt="">
+
+        <img src="${p.img}" alt="${p.name}">
+
         <div style="flex:1">
+
           <b>${p.name}</b>
-          <small>${money(p.price)}</small>
+
+          ${
+            p.color
+            ? `<small style="display:block;margin-bottom:5px">
+                Colour: ${p.color}
+              </small>`
+            : ""
+          }
+
+          <small>${money(p.price)} each</small>
+
+          <div style="
+            display:flex;
+            align-items:center;
+            gap:8px;
+            margin-top:10px;
+          ">
+
+            <button
+              class="iconbtn"
+              style="width:32px;height:32px"
+              onclick="changeQuantity(${i},-1)"
+            >
+              −
+            </button>
+
+            <span
+              style="
+                min-width:28px;
+                text-align:center;
+                font-weight:700;
+              "
+            >
+              ${p.quantity}
+            </span>
+
+            <button
+              class="iconbtn"
+              style="width:32px;height:32px"
+              onclick="changeQuantity(${i},1)"
+            >
+              +
+            </button>
+
+          </div>
+
         </div>
-        <button class="iconbtn" onclick="removeItem(${i})">×</button>
+
+        <button
+          class="iconbtn"
+          onclick="removeItem(${i})"
+          aria-label="Remove item"
+        >
+          🗑️
+        </button>
+
       </div>
+
     `).join("");
   }
+
+  document.getElementById("total").textContent =
+    money(
+      cart.reduce(
+        (sum,p) => sum + (p.price * p.quantity),
+        0
+      )
+    );
+}
 
   document.getElementById("total").textContent=
     money(cart.reduce((s,p)=>s+p.price,0));
@@ -479,6 +746,22 @@ function renderCart(){
 
 function removeItem(i){
   cart.splice(i,1);
+  renderCart();
+}
+function changeQuantity(index,change){
+
+  if(!cart[index]){
+    return;
+  }
+
+  cart[index].quantity += change;
+
+  if(cart[index].quantity <= 0){
+
+    cart.splice(index,1);
+
+  }
+
   renderCart();
 }
 
