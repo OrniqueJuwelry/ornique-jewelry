@@ -741,10 +741,6 @@ function renderCart(){
     );
 }
 
-  document.getElementById("total").textContent=
-    money(cart.reduce((s,p)=>s+p.price,0));
-}
-
 function removeItem(i){
   cart.splice(i,1);
   renderCart();
@@ -796,7 +792,7 @@ function closeCheckout(){
 }
 
 function getProductTotal(){
-  return cart.reduce((sum,p)=>sum+p.price,0);
+  return cart.reduce((sum,p)=>sum + (p.price * p.quantity),0);
 }
 
 function getDeliveryCharge(){
@@ -869,7 +865,17 @@ async function placeOrder(){
   const productTotal = getProductTotal();
   const deliveryCharge = getDeliveryCharge();
   const grandTotal = productTotal + deliveryCharge;
-  const orderItems = cart.map(p => p.name).join(", ");
+  const orderItems = cart.map(p => {
+  let item = p.name;
+
+  if(p.color){
+    item += ` - ${p.color}`;
+  }
+
+  item += ` x ${p.quantity}`;
+
+  return item;
+}).join(", ");
   const orderData = {
     customerName: name,
     phone: phone,
@@ -908,7 +914,6 @@ async function placeOrder(){
 }
 
 renderProducts();
-</script>
 </script>
 </body>
 </html>
