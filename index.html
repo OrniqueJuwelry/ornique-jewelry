@@ -232,21 +232,44 @@
   <a href="https://www.instagram.com/ornique.bd/" target="_blank" rel="noopener">Instagram</a>
 </div>
       <div class="nav-actions">
-        <button class="iconbtn" onclick="toggleCart()" aria-label="Open shopping bag">
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.7"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path d="M6 8h12l1 13H5L6 8z"/>
-    <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
-  </svg>
-</button>
+        <div style="position:relative">
+  <button class="iconbtn" onclick="toggleCart()" aria-label="Open shopping Cart">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M6 8h12l1 13H5L6 8z"/>
+      <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+    </svg>
+  </button>
+
+  <span
+    id="cartCount"
+    style="
+      position:absolute;
+      top:-5px;
+      right:-3px;
+      min-width:18px;
+      height:18px;
+      padding:0 5px;
+      border-radius:999px;
+      background:#b28a4a;
+      color:#fff;
+      font-size:11px;
+      font-weight:700;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      line-height:18px;
+    "
+  >0</span>
+</div>
       </div>
     </nav>
   </header>
@@ -376,7 +399,7 @@
 
   <div class="overlay" id="overlay" onclick="toggleCart()"></div>
   <aside class="cart-panel" id="cart">
-    <div class="cart-top"><h3 style="margin:0">Your Bag</h3><button class="iconbtn" onclick="toggleCart()">×</button></div>
+    <div class="cart-top"><h3 style="margin:0">Your Cart</h3><button class="iconbtn" onclick="toggleCart()">×</button></div>
     <div class="cart-items" id="cartItems"><div class="empty">Your bag is empty.<br>Add a piece you love.</div></div>
     <div class="cart-bottom">
       <div class="total"><span>Total</span><span id="total">৳0</span></div>
@@ -775,7 +798,7 @@ function renderProducts(list=products){
             style="width:100%;margin-top:14px"
             onclick="addToCart(${p.id})"
           >
-            Add to bag
+            Add to Cart
           </button>
 
         </div>
@@ -856,6 +879,19 @@ function addToCart(id){
 }
 
 function renderCart(){
+    const cartCount = document.getElementById("cartCount");
+
+  if(cartCount){
+    const totalItems = cart.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+
+    cartCount.textContent = totalItems;
+
+    cartCount.style.display =
+      totalItems > 0 ? "flex" : "none";
+  }
 
   const box = document.getElementById("cartItems");
 
