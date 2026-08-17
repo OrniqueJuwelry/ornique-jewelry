@@ -33,9 +33,43 @@
     .nav-actions{display:flex;gap:10px;align-items:center}
     .iconbtn{width:40px;height:40px;border:1px solid var(--line);background:transparent;border-radius:50%;cursor:pointer}
     .hero{max-width:1200px;margin:auto;padding:36px 24px 72px}
-    .hero-card{min-height:600px;border-radius:24px;overflow:hidden;position:relative;background:
-      linear-gradient(90deg,rgba(18,15,12,.82) 0%,rgba(18,15,12,.42) 45%,rgba(18,15,12,.08) 100%),
-      url("assets/ornique-logo.jpeg") center/cover}
+    .hero-card{
+  min-height:600px;
+  border-radius:24px;
+  overflow:hidden;
+  position:relative;
+}
+
+.hero-slide{
+  position:absolute;
+  inset:0;
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+  opacity:0;
+  transition:opacity 1s ease-in-out;
+}
+
+.hero-slide.active{
+  opacity:1;
+}
+
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    90deg,
+    rgba(18,15,12,.82) 0%,
+    rgba(18,15,12,.42) 45%,
+    rgba(18,15,12,.08) 100%
+  );
+  z-index:1;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+}
     .hero-content{padding:110px 8%;max-width:690px;color:#fff}
     .eyebrow{font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:#d9c19a;font-weight:700}
     h1,h2,h3{font-family:"Playfair Display",serif}
@@ -279,8 +313,44 @@
 
   <main>
     <section class="hero">
-      <div class="hero-card">
-        <div class="hero-content">
+  <div class="hero-card">
+
+    <div
+      class="hero-slide active"
+      style="background-image:url('assets/IMG_4492.jpg')"
+    ></div>
+
+    <div
+      class="hero-slide"
+      style="background-image:url('assets/IMG_4498.jpg')"
+    ></div>
+
+    <div
+      class="hero-slide"
+      style="background-image:url('assets/moonlight.jpg')"
+    ></div>
+
+    <div
+      class="hero-slide"
+      style="background-image:url('assets/diamond.PNG')"
+    ></div>
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <div class="eyebrow">Ornique Jewelry • Bangladesh</div>
+      <h1>Jewelry that feels like you.</h1>
+      <p>
+        Modern silhouettes, refined details and timeless shine —
+        curated for the moments you want to remember.
+      </p>
+      <a class="btn btn-gold" href="#shop">
+        Explore Collection →
+      </a>
+    </div>
+
+  </div>
+</section>
           <div class="eyebrow">Ornique Jewelry • Bangladesh</div>
           <h1>Jewelry that feels like you.</h1>
           <p>Modern silhouettes, refined details and timeless shine — curated for the moments you want to remember.</p>
@@ -1211,7 +1281,30 @@ message.innerHTML = `
   }
 }
 
-renderProducts();
+let heroSlideIndex = 0;
+
+function startHeroSlideshow(){
+
+  const slides = document.querySelectorAll(".hero-slide");
+
+  if(!slides.length){
+    return;
+  }
+
+  setInterval(() => {
+
+    slides[heroSlideIndex].classList.remove("active");
+
+    heroSlideIndex =
+      (heroSlideIndex + 1) % slides.length;
+
+    slides[heroSlideIndex].classList.add("active");
+
+  }, 4000);
+}
+
+startHeroSlideshow();
+  renderProducts();
 </script>
 </body>
 </html>
